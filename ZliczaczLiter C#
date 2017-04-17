@@ -1,0 +1,81 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace ConsoleApplication23
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            int testy = 0;
+            bool a = true;
+            do
+            {
+                testy = 0;
+                a = Int32.TryParse(Console.ReadLine(), out testy);
+                if (!a)
+                    Console.WriteLine("Wpisano ciag litere/litere!");
+            } while (!a);
+            char[] znaki;
+            string tekst = "";
+            while(testy > 0)
+            {
+                Console.WriteLine("Podaj lancuch, a ja zlicze wystepujace w nim litery, rozrozniajac przy tym duze i male litery :");
+               tekst = Console.ReadLine();
+           
+                znaki = new char[tekst.Length];
+                for (int i = 0; i < tekst.Length; i++)
+                {
+                    if (tekst[i] == ' ')
+                        continue;
+                    if(Metoda1(tekst[i]))
+                    znaki[i] = tekst[i];
+                }
+
+                var result = WyswietlPoKolei(znaki);
+                foreach(char n in result)
+                {
+                    string odpowiedz = "";
+                    int warunek = ZliczajLitery(n, znaki);
+                    if (warunek != 1)
+                    {
+                        odpowiedz = " razy.";
+                    }
+                    else
+                    {
+                        odpowiedz = " raz.";
+                    }
+                    Console.WriteLine(n + " " + "wystepuje: " + ZliczajLitery(n, znaki) + odpowiedz);
+                }
+                testy--;
+            }
+
+            Console.ReadLine();
+        }
+
+        static bool Metoda1(char n)
+        {
+            if (char.IsLetter(n))
+                return true;
+            return false;
+        }
+
+        static IEnumerable<char> WyswietlPoKolei(char[]tab)
+        {
+            var result = tab.OrderBy(c => char.GetNumericValue(c)).Select(c => c).Distinct();
+            return result;
+        }
+
+        static int ZliczajLitery(char n, char []tab)
+        {
+          
+            var r = tab.Where(u => u == n).Count();
+            
+
+            return r;
+        }
+    }
+}
