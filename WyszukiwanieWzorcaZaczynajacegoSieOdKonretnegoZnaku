@@ -1,0 +1,64 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+int dlugosc(char* lan)
+{
+    int i = 0;
+    while(*lan++)
+    {
+        i++;
+    }
+
+    return i;
+}
+
+char* funkcja(char* lan, char l, int *ilosc)
+{
+
+    char* wynik = NULL;
+    int dlLan = dlugosc(lan);
+    int zaalokowana = 0;
+    int i = 0;
+    while(i<=dlLan)
+    {
+        if(lan[i] == l)
+        {
+            while(lan[i] >=48 && lan[i] <=57)
+            {
+                wynik = (char*)realloc(wynik, (zaalokowana+1) * sizeof(char));
+                wynik[zaalokowana] = lan[i];
+                zaalokowana++;
+                i++;
+
+            }
+        }
+        else
+        {
+            if(wynik[zaalokowana-1] == '\n')
+            {
+                i++;
+                continue;
+            }
+            wynik = (char*)realloc(wynik, (zaalokowana + 1) * sizeof(char));
+            wynik[zaalokowana] = '\n';
+            zaalokowana++;
+            i++;
+        }
+    }
+    *ilosc = zaalokowana;
+    return wynik;
+}
+
+
+int main()
+{
+    int ilosc = 0;
+    char* r = funkcja("1234,5.,54.,5.41234gfdgfd124354356453,dfgjkdjgfdk178716.8791768k19", '1', &ilosc);
+
+    int i;
+    for(i = 0; i<ilosc; i++)
+    {
+            printf("%c", r[i]);
+    }
+    return 0;
+}
